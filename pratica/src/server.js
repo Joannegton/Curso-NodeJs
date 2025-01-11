@@ -15,30 +15,32 @@ app.get('/', (req, res) => {
 })
 
 
-app.post('/clientes', (req, res) => {
+app.post('/clientes', async (req, res) => {
     const {nome, telefone, email, senha, data_cadastro} = req.body
 
     const query = 'INSERT INTO clientes(nome, telefone, email, senha, data_cadastro) VALUES (?, ?, ?, ?, ?)'
-    conexao.query(query, [nome, telefone, email, senha, data_cadastro], (erro, resultado) => {
-        if(erro){
-            res.status(500).json({message: 'Erro ao cadastrar cliente', erro: erro.message})
-        } else{
+
+    try{
+        await conexao.query(query, [nome, telefone, email, senha, data_cadastro])
         res.status(201).json({message: 'Cliente cadastrado com sucesso'})
-        }
-    })
+    } catch (erro){
+        res.status(500).json({message: 'Erro ao cadastrar cliente', erro: erro.message})
+    }
+    
 })
 
-app.get('/clientes', (req, res) => {
+app.get('/clientes', async (req, res) => {
     const query = "SELECT nome, email, telefone FROM clientes"
 
-    conexao.query(query, (erro, resultados) =>{
-        
-        if(erro){
-            res.status(500).json({message: 'Erro ao localizar clientes', erro: erro.message})
-        } else{
-            res.status(200).json(resultados)
-        }
-    })
+    try {
+        const [resultados] = await conexao.query(query)
+        res.status(200).json(resultados)
+    } catch (erro) {
+        console.error('Erro ao localizar clientes:', erro);
+        res.status(500).json({message: 'Erro ao localizar clientes'})
+
+    }
+
 })
 
 const PORT = 3000

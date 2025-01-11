@@ -20,9 +20,11 @@ Primeiro, instale o **Node.js** em seu ambiente. Você pode baixar a versão mai
 
 ### **2. Inicializar o projeto**
 
-Crie uma nova pasta para o seu projeto e inicialize o **npm** com o comando:
+Crie uma nova pasta para o seu projeto e com o terminal dentro da pasta inicialize o **npm** com o comando:
 
 ```bash
+mkdir restaurante
+cd restaurante
 npm init -y
 ```
 
@@ -42,34 +44,40 @@ npm install express mysql2 body-parser cors
 
 ## **Conexão com o Banco de Dados**
 
-Crie um arquivo `db.js` para gerenciar a conexão com o banco de dados MySQL.
+**Instalar MySQL**
+Crie e suba o banco de dados antes de continuar -> [criar banco de dados](../databases/criar-banco-dados.md)
+
+Crie um arquivo `db.js` na pasta restaurante, para gerenciar a conexão com o banco de dados MySQL.
  
 ```javascript
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise'); // Importa o módulo mysql2
 
 // Criação da conexão com o banco de dados
-const conexao = mysql.createConnection({
+const conexao = mysql.createPool({
   host: 'localhost', // Seu host (pode ser localhost)
   user: 'root',      // Seu usuário do MySQL
   password: '',      // Sua senha do MySQL
-  database: 'nome_banco_dados' // Nome do banco de dados
+  database: 'sistema_reservas' // Nome do banco de dados
 });
 
-// Verifica a conexão
-conexao.connect((err) => {
-  if (err) {
-    console.error('Erro ao conectar com o MySQL:', err);
-  } else {
-    console.log('Conectado ao MySQL!');
-  }
-});
+// função para testar a conexão
+async function testarConexao() {
+    try {
+        await conexao.query('SELECT 1');
+        console.log('Conexão com o banco de dados realizada com sucesso!');
+    } catch (erro) {
+        console.error('Erro ao se conectar ao banco de dados: ' + erro);
+    }
+}
+
+testarConexao(); // Testa a conexão
 
 module.exports = conexao;
 ```
 
 Este código estabelece a conexão com o banco de dados MySQL. Caso a conexão falhe, o erro será exibido no console.
 
-Para testar a conexão, podemos executar o codigo abaixo:
+Para testar a conexão, podemos executar o codigo abaixo no terminal:
 
 ```bash
 node db.js
@@ -77,7 +85,7 @@ node db.js
 
 ## **Configuração do Servidor Express**
 
-Agora, crie o arquivo `server.js` para configurar o servidor e as rotas da API.
+Agora, crie o arquivo `server.js` em restaurante, para configurar o servidor e as rotas da API.
 
 ```javascript
 const express = require('express');

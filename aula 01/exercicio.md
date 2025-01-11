@@ -1,7 +1,11 @@
-realizar uma conexão com o banco de dados MySQL
-host: tcp://0.tcp.sa.ngrok.io:10124 (ngrok tcp 3306)
-usuário: root
-senha: ''
-database: sistema_veterinario
+# Exercício
 
-listar tudo da tabela usuario.
+## 1) Realizar uma conexão com o banco de dados MySQL
+
+**Detalhes da conexão:**
+- **Host:** tcp://0.tcp.sa.ngrok.io:10124 (ngrok tcp 3306)
+- **Usuário:** root
+- **Senha:** ''
+- **Database:** sistema_veterinario
+
+## 2) Listar tudo da tabela `usuarios`
