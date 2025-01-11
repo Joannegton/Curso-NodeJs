@@ -7,6 +7,7 @@ CREATE TABLE clientes (
     nome VARCHAR(100) NOT NULL,
     telefone VARCHAR(15),
     email VARCHAR(100),
+    senha: VARCHAR(100) NOT NULL,
     data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

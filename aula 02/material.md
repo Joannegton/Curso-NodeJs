@@ -13,6 +13,7 @@ projeto-nodejs/
 │   ├── controllers/    # Controladores da aplicação
 │   ├── routes/         # Rotas da aplicação
 │   ├── services/       # Serviços da aplicação
+│   ├── db.js           # arquivo de configuração do banco de dados
 │   └── server.js       # Arquivo principal da aplicação
 │
 ├── package.json        # Arquivo com as informações do projeto e dependências
@@ -37,7 +38,7 @@ Para criar rotas, serviços e controladores em uma aplicação Node.js, podemos 
 Os serviços são responsáveis por encapsular a lógica de negócio da aplicação, separando-a dos controladores. Os serviços podem ser utilizados para realizar operações no banco de dados, processar dados, realizar cálculos, entre outras tarefas. Vamos criar um serviço simples para a nossa aplicação. Vamos criar um arquivo `helloService.js` na pasta `services/` com a seguinte estrutura:
 
 ```javascript
-const helloService = () => {
+function helloService() {
     return 'Hello, World!';
 };
 
@@ -56,7 +57,7 @@ Para utilizar o serviço no controlador, basta importar o serviço e chamá-lo n
 ```javascript
 const helloService = require('../services/helloService');
 
-const helloController = (req, res) => {
+function helloController (req, res){
     const message = helloService();
     res.send(message);
 };
@@ -101,24 +102,3 @@ app.listen(3000, () => {
 Neste exemplo, importamos o arquivo de rotas `hello.js` e adicionamos a rota `/hello` ao Express, acessível através do endpoint `/api/hello`.
 
 Com esses passos, criamos uma rota e um controlador simples para a nossa aplicação Node.js. A partir desse exemplo, podemos expandir a aplicação e adicionar mais rotas e controladores para implementar as funcionalidades desejadas.
-
-### **Async e await**
-
-O JavaScript é uma linguagem assíncrona, o que significa que as operações podem ser realizadas de forma não sequencial. Para lidar com operações assíncronas, podemos utilizar as palavras-chave `async` e `await` para tornar o código mais legível e fácil de entender.
-
-Por exemplo, ao realizar operações de leitura e escrita em um banco de dados, podemos utilizar funções assíncronas e `await` para aguardar a conclusão da operação antes de prosseguir com o código.
-
-```javascript
-async function getUser(id){
-    const user = await User.findById(id);
-    return user;
-};
-```
-
-Neste exemplo, a função `getUser` é assíncrona e utiliza `await` para aguardar a conclusão da operação de busca do usuário no banco de dados antes de retornar o resultado.
-
-O uso de `async` e `await` facilita a escrita de código assíncrono em JavaScript, tornando-o mais legível e fácil de entender.
-
-
-
-

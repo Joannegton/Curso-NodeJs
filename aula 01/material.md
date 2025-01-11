@@ -43,7 +43,7 @@ npm install express mysql2 body-parser cors
 ## **Conexão com o Banco de Dados**
 
 Crie um arquivo `db.js` para gerenciar a conexão com o banco de dados MySQL.
-
+ 
 ```javascript
 const mysql = require('mysql2');
 
@@ -68,6 +68,12 @@ module.exports = conexao;
 ```
 
 Este código estabelece a conexão com o banco de dados MySQL. Caso a conexão falhe, o erro será exibido no console.
+
+Para testar a conexão, podemos executar o codigo abaixo:
+
+```bash
+node db.js
+```
 
 ## **Configuração do Servidor Express**
 
