@@ -67,7 +67,8 @@ module.exports = helloController;
 
 ### **3. Criando uma Rota**
 
-Para criar uma rota, basta utilizar um dos métodos HTTP disponíveis no Express (como `get`, `post`, `put`, `delete`) e definir o endpoint e a função de callback que será executada quando a rota for acessada. Podemos importar o controller para utilizar aqui. 
+Para criar uma rota, basta utilizar um dos métodos HTTP disponíveis no Express (como `get`, `post`, `put`, `delete`) e definir o endpoint e a função de callback que será executada quando a rota for acessada. 
+Podemos importar o controller para utilizar aqui. 
 Vamos criar um arquivo `helloRouter.js` na pasta `routes/` com a seguinte estrutura: 
 
 ```javascript

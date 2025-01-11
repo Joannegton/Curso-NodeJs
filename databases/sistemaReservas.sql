@@ -13,10 +13,9 @@ CREATE TABLE clientes (
 
 -- Tabela de mesas
 CREATE TABLE mesas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    numero INT NOT NULL,
+    numero INT AUTO_INCREMENT PRIMARY KEY,
     capacidade INT NOT NULL,
-    status ENUM('disponivel', 'ocupada') DEFAULT 'disponivel'
+    status ENUM('disponivel', 'ocupada', 'desativada') DEFAULT 'disponivel'
 );
 
 -- Tabela de reservas
@@ -28,5 +27,22 @@ CREATE TABLE reservas (
     hora_reserva TIME NOT NULL,
     status ENUM('ativa', 'cancelada', 'finalizada') DEFAULT 'ativa',
     FOREIGN KEY (cliente_id) REFERENCES clientes(id),
-    FOREIGN KEY (mesa_id) REFERENCES mesas(id)
+    FOREIGN KEY (mesa_id) REFERENCES mesas(numero)
 );
+
+-- Inserindo dados na tabela de mesas
+INSERT INTO mesas (capacidade) VALUES (2);
+INSERT INTO mesas (capacidade) VALUES (2);
+INSERT INTO mesas (capacidade) VALUES (2);
+INSERT INTO mesas (capacidade) VALUES (2);
+INSERT INTO mesas (capacidade) VALUES (2);
+INSERT INTO mesas (capacidade) VALUES (4);
+INSERT INTO mesas (capacidade) VALUES (4);
+INSERT INTO mesas (capacidade) VALUES (4);
+INSERT INTO mesas (capacidade) VALUES (6);
+INSERT INTO mesas (capacidade) VALUES (6);
+INSERT INTO mesas (capacidade) VALUES (8);
+INSERT INTO mesas (capacidade) VALUES (10);
+INSERT INTO mesas (capacidade) VALUES (10);
+
+

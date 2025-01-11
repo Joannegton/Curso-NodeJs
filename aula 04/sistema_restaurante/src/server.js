@@ -4,6 +4,7 @@ const cors = require('cors') // permite que o servidor aceite requisições de o
 
 const conexao = require('./db') // importa a conexão com o banco de dados
 const mesasRouter = require('./routes/mesasRoutes')
+const reservaRouter = require('./routes/reservasRoutes')
 
 // cria o servidor
 const app = express() 
@@ -12,11 +13,11 @@ app.use(bodyParser.json()) // analisa o corpo da requisição
 app.use(cors()) // permite que o servidor aceite requisições de outros domínios
 
 app.use('/', mesasRouter) // importa as rotas de clientes
+app.use('/', reservaRouter)
 
 
 
-
-// EXERCICIO -> organizar as rotas em arquivos separados
+// EXERCICIO -> organizar as rotas de clientes em um arquivo separado de service, controller e routes
 // rota para criar um novo cliente
 app.post('/clientes', async (req, res) => {
     const {nome, telefone, email, senha, data_cadastro} = req.body
