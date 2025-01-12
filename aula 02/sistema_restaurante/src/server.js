@@ -1,6 +1,7 @@
 const express = require('express') // cria o servidor 
 const bodyParser = require('body-parser') // analisa o corpo da requisição
 const cors = require('cors') // permite que o servidor aceite requisições de outros domínios
+const bcrypt = require('bcrypt') // criptografa a senha
 
 const conexao = require('./db') // importa a conexão com o banco de dados
 
@@ -13,10 +14,13 @@ app.use(cors()) // permite que o servidor aceite requisições de outros domíni
 // rota para criar um novo cliente
 app.post('/clientes', async (req, res) => {
     const {nome, telefone, email, senha, data_cadastro} = req.body
+
+    const hashSenha = bcrypt.hashSync(senha, 10) // criptografa a senha
+
     const query = 'INSERT INTO clientes(nome, telefone, email, senha, data_cadastro) VALUES (?, ?, ?, ?, ?)'
 
     try {
-        await conexao.query(query, [nome, telefone, email, senha, data_cadastro])
+        await conexao.query(query, [nome, telefone, email, hashSenha, data_cadastro])
         res.status(201).json({message: 'Cliente cadastrado com sucesso'})
     } catch (error) {
         res.status(500).json({message: 'Erro ao cadastrar cliente', error: error.message})

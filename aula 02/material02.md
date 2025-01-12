@@ -71,6 +71,42 @@ app.get('/clientes', async (req, res) => {
 
 Neste exemplo, a rota `/clientes` responde a uma requisição GET e executa uma função assíncrona que busca os dados dos clientes no banco de dados e retorna os clientes em formato JSON. Caso ocorra um erro durante a operação, a rota retorna um status 500 e uma mensagem de erro.
 
+#### Hash de Senhas com `bcryptjs`
+
+O uso de hashes para armazenar senhas garante que mesmo que o banco de dados seja comprometido, as senhas dos usuários não estarão diretamente acessíveis. Para isso, utilizaremos a biblioteca `bcryptjs`.
+
+##### **Instalação do bcryptjs**
+
+Execute o seguinte comando para instalar a biblioteca:
+
+```bash
+npm install bcryptjs
+```
+
+**Hash de Senhas**
+
+O código abaixo demonstra como gerar o hash de uma senha:
+
+```javascript
+const bcrypt = require('bcryptjs');
+
+const senha = '123456'; // Senha do usuario
+const hashSenha = bcrypt.hashSync(senha, 10); // 10 é o número de salt rounds
+console.log(hashSenha); // Resultado: senha criptografada
+```
+
+**Comparação de Senhas**
+
+Para comparar uma senha fornecida com um hash armazenado, geralmente para realizar autenticação:
+
+```javascript
+
+const senhaFornecida = '123456'; // Senha fornecida pelo usuario
+const senhaCorreta = bcrypt.compareSync(senhaFornecida, hashSenha);
+```
+
+Se a senha fornecida for igual à senha armazenada, a variável `senhaCorreta` será `true`, caso contrário, será `false`.
+
 #### **POST /clientes**
 
 ```javascript
@@ -79,7 +115,8 @@ app.post('/clientes', async (req, res) => {
     const query = 'INSERT INTO clientes(nome, telefone, email, senha, data_cadastro) VALUES (?, ?, ?, ?, ?)';
 
     try {
-        await conexao.query(query, [nome, telefone, email, senha, data_cadastro]);
+        const hashSenha = bcrypt.hashSync(senha, 10);
+        await conexao.query(query, [nome, telefone, email, hashSenha, data_cadastro]);
         res.status(201).json({ message: 'Cliente cadastrado com sucesso' });
     } catch (error) {
         res.status(500).json({ message: 'Erro ao cadastrar cliente', error: error.message });
@@ -88,6 +125,7 @@ app.post('/clientes', async (req, res) => {
 ```
 
 Neste exemplo, a rota `/clientes` responde a uma requisição POST e executa uma função assíncrona que insere um novo cliente no banco de dados com base nos dados recebidos no corpo da requisição. Caso ocorra um erro durante a operação, a rota retorna um status 500 e uma mensagem de erro.
+
 
 #### **PUT /clientes/:id**
 
@@ -125,3 +163,4 @@ app.delete('/clientes/:id', async (req, res) => {
 ```
 
 Neste exemplo, a rota `/clientes/:id` responde a uma requisição DELETE e executa uma função assíncrona que deleta um cliente no banco de dados com base no ID fornecido na URL. Caso ocorra um erro durante a operação, a rota retorna um status 500 e uma mensagem de erro.
+

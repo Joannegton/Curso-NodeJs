@@ -13,18 +13,21 @@ app.use(bodyParser.json()) // analisa o corpo da requisição
 app.use(cors()) // permite que o servidor aceite requisições de outros domínios
 
 app.use('/', mesasRouter) // importa as rotas de clientes
-app.use('/', reservaRouter)
+app.use('/', reservaRouter) // importa as rotas de reservas
 
 
 
 // EXERCICIO -> organizar as rotas de clientes em um arquivo separado de service, controller e routes
+ 
 // rota para criar um novo cliente
 app.post('/clientes', async (req, res) => {
     const {nome, telefone, email, senha, data_cadastro} = req.body
+
+    const hashSenha = bcrypt.hashSync(senha, 10) // criptografa a senha
     const query = 'INSERT INTO clientes(nome, telefone, email, senha, data_cadastro) VALUES (?, ?, ?, ?, ?)'
 
     try {
-        await conexao.query(query, [nome, telefone, email, senha, data_cadastro])
+        await conexao.query(query, [nome, telefone, email, hashSenha, data_cadastro])
         res.status(201).json({message: 'Cliente cadastrado com sucesso'})
     } catch (error) {
         res.status(500).json({message: 'Erro ao cadastrar cliente', error: error.message})
