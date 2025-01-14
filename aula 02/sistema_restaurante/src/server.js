@@ -59,6 +59,30 @@ app.get('/clientes/:id', async (req, res) => {
     }
 })
 
+//realizar login
+app.post('/login', async (req, res) => {
+    const {email, senha} = req.body
+
+    try {
+        const query = 'SELECT email, senha FROM clientes WHERE email = ?'
+        const [usuario] = await conexao.query(query, [email])
+
+        if (!usuario || usuario.length === 0) {
+            throw new Error('Usuário ou senha inválidos');
+        }
+        
+        const decriptSenha = bcrypt.compareSync(senha, usuario[0].senha)
+
+        if(decriptSenha){
+            res.status(200).json({mensagem: 'Login realizado com sucesso'})
+        }
+        
+    } catch (error) {
+        res.status(400).json({mensagem: 'Usuario ou senha invalidos'})
+    }
+
+})
+
 // rota para atualizar um cliente
 app.put('/clientes/:id', async (req, res) => {
     const id = req.params.id
