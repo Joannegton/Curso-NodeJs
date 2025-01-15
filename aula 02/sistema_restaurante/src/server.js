@@ -40,6 +40,21 @@ app.get('/clientes', async (req, res) => {
     }
 })
  
+// rota para atualizar um cliente
+app.put('/clientes/:id', async (req, res) => {
+    const id = req.params.id
+    const {nome, telefone, email, senha, data_cadastro} = req.body
+    const query = 'UPDATE clientes SET nome = ?, telefone = ?, email = ?, senha = ?, data_cadastro = ? WHERE id = ?'
+
+    try {
+        await conexao.query(query, [nome, telefone, email, senha, data_cadastro, id])
+        res.status(200).json({message: 'Cliente atualizado com sucesso'})
+    } catch (error) {
+        console.error('Erro ao atualizar cliente:', error)
+        res.status(500).json({message: 'Erro ao atualizar cliente'})
+    }
+})
+
 // rota para listar um cliente específico
 app.get('/clientes/:id', async (req, res) => {
     const id = req.params.id
@@ -56,21 +71,6 @@ app.get('/clientes/:id', async (req, res) => {
     } catch (error) {
         console.error('Erro ao localizar cliente:', error)
         res.status(500).json({message: 'Erro ao localizar cliente'})
-    }
-})
-
-// rota para atualizar um cliente
-app.put('/clientes/:id', async (req, res) => {
-    const id = req.params.id
-    const {nome, telefone, email, senha, data_cadastro} = req.body
-    const query = 'UPDATE clientes SET nome = ?, telefone = ?, email = ?, senha = ?, data_cadastro = ? WHERE id = ?'
-
-    try {
-        await conexao.query(query, [nome, telefone, email, senha, data_cadastro, id])
-        res.status(200).json({message: 'Cliente atualizado com sucesso'})
-    } catch (error) {
-        console.error('Erro ao atualizar cliente:', error)
-        res.status(500).json({message: 'Erro ao atualizar cliente'})
     }
 })
 
